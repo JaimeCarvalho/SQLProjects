@@ -1,0 +1,169 @@
+CREATE DATABASE Library_Management_System
+GO
+USE Library_Management_System 
+
+CREATE TABLE Customer(
+		CustomerID INT PRIMARY KEY IDENTITY (1,1),
+		Name_Customer NVARCHAR(200),
+		Adress_Customer NVARCHAR(100) NOT NULL,
+		Phone_Customer CHAR(10) NOT NULL UNIQUE,
+		Email_customer nvarchar(100) UNIQUE NOT NULL CHECK (email_customer like '%@%') 
+)
+
+CREATE TABLE Librarian(
+		EmployeeID INT PRIMARY KEY IDENTITY(1,1),
+		Name_Employee NVARCHAR(200),
+		Adress_Employee NVARCHAR(200) NOT NULL,
+		Phone_Employee VARCHAR(10) UNIQUE NOT NULL
+)
+
+CREATE TABLE Books(
+		BookID INT PRIMARY KEY IDENTITY(1,1),
+		ISBN VARCHAR(13) UNIQUE NOT NULL,
+		Title NVARCHAR(100) NOT NULL,
+		Author NVARCHAR(100) NOT NULL,
+		Publication_Date DATE NOT NULL,
+		Genre NVARCHAR(100) NOT NULL,
+		Virtual BIT NOT NULL,
+		Quantity INT DEFAULT(1),
+		CHECK (Quantity >= 0)
+)
+
+CREATE TABLE Borrow(
+		BorrowID INT PRIMARY KEY IDENTITY(1,1),
+		CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+		BookID INT FOREIGN KEY REFERENCES Books(BookID),
+		Rent_Date DATE DEFAULT (GETDATE()),
+		Due_Date DATE DEFAULT (GETDATE() +7),
+		EmployeeID INT FOREIGN KEY REFERENCES Librarian(EmployeeID),
+		Returned BIT default(0)
+)
+
+INSERT INTO Customer (name_customer, adress_customer, Phone_customer,Email_customer) 
+		VALUES
+		('Sandra S Thomas','732  Sarah Drive, Lake Charles','3375400292','sandra@gmail.com'),
+		('Tomé Coelho','Avenida Ivan Brito 7509-658 Covilhã','2360679023','tome@gmail.com'),
+		('Santiago Leal de Garcia','Rua Henriques, nº 6','2614069169','santiago@gmail.com'),
+		('Isabela Marques','Av. São. Leticia, 50 8721 Vila Nova','9101605700','isabela@gmail.com'),
+		('Oral Pacocha','8 Mellie Lane, Rowanston, Southland, 7692','0474605009','oral@gmail.com'),
+		('Fiona Matthews','1 Lewis Square Timville TN31 7BY','6747227300','fiona@gmail.com'),
+		('Holly Campbell','Studio 03z Shaw River North Sebastianton','3340088412','holly@gmail.com'),
+		('Barry Phillips','703 Bailey Fields North Zoeborough ','0416787565','barryl@gmail.com'),
+		('Steve Griffiths','45 Butler Forges North Evelyn TR13','2366629628','steve@gmail.com'),
+		('Mia Robertson','Studio 34 Kelly Harbour North Anthonyfurt SY7 8AQ','0546180602','mia@gmail.com'),
+		('Alexa Richards','109 Amy Meadow East Colinmouth HU7 4FE','0197391745','alexa@gmail.com'),
+		('Andrew Wilkinson','Studio 23l Wilson Corners Port ','0951803183','andrew@gmail.com'),
+		('Jack Davis','Flat 14r Knight Point East Elizabeth ','4893768890','jack@gmail.com'),
+		('Nick Mason','3 Carmen Inlet Quentinchester ','0613456123','nick@gmail.com')
+
+INSERT INTO librarian 
+	(Name_Employee, Adress_Employee, Phone_Employee) values 
+		('James Blake', '123 Oak Ave, Ewing, NJ 08560', '7751234567'),
+		('Jon Peterson', '11 Chestnut Street, Ewing, NJ 08560', '7756789012'),
+		('Patricia R. Breen','2021 Findley Avenue Cooperstown','7017978297'),
+		('Nestor Carter','943 Hoeger Plain Antoninaport','1657096345'),
+		('Branson DuBuque IV','8581 Thompson Lodge Apt. 223','4041568178'),
+		('Julien Moen','8239 Weber Pike Apt. 386 East Tristin','8058832418');
+		select * from Librarian
+
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9362778521988','JJ Smith','10-Day Green Smoothie Cleanse','0','2016','Drama','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9055419320915','Stephen King','11/22/63: A Novel','1','2011','Action','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9869114717938','Jordan B. Peterson','12 Rules for Life: An Antidote to Chaos','1','2018','Fantasy','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9241114670959','George Orwell','1984 (Signet Classics)','1','2017','Detective','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9717379281320','National Geographic Kids','5,000 Awesome Facts (About Everything!) (National Geographic Kids)','0','2019','Historical Fiction','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9992933325165','George R. R. Martin','A Dance with Dragons (A Song of Ice and Fire)','0','2011','Historical Fiction','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9066058299687','George R. R. Martin','A Game of Thrones / A Clash of Kings / A Storm of Swords / A Feast of Crows / A Dance with Dragons','1','2014','Drama','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9731464961728','Amor Towles','A Gentleman in Moscow: A Novel','1','2017','Action','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9356709702982','James Comey','A Higher Loyalty: Truth, Lies, and Leadership','0','2018','Detective','5');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9935036424663','Fredrik Backman','A Man Called Ove: A Novel','0','2016','Detective','9');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9389422612078','Fredrik Backman','A Man Called Ove: A Novel','1','2017','Detective','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9436488948560','Larry Schweikart','A Patriot´s History of the United States: From Columbus´s Great Discovery to the War on Terror','0','2010','Adventure','3');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9058044225879','Madeleine L´Engle','A Wrinkle in Time (Time Quintet)','1','2018','Historical Fiction','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9073154857207','Adult Coloring Book Designs','Adult Coloring Book Designs: Stress Relief Coloring Book: Garden Designs, Mandalas, Animals, and Paisley Patterns','0','2016','Action','10');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9354461557310','Blue Star Coloring','Adult Coloring Book: Stress Relieving Animal Designs','1','2015','Adventure','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9225737556783','Blue Star Coloring','Adult Coloring Book: Stress Relieving Patterns','1','2015','Classics','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9125834316742','Coloring Books for Adults','Adult Coloring Books: A Coloring Book for Adults Featuring Mandalas and Henna Inspired Flowers, Animals, and Paisleyâ€¦','1','2015','Comic','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9985919034678','Ron Chernow','Alexander Hamilton','1','2016','Classics','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9835884381226','Anthony Doerr','All the Light We Cannot See','0','2014','Historical Fiction','4');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9282451827154','Anthony Doerr','All the Light We Cannot See','0','2015','Fantasy','7');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9993008119137','Veronica Roth','Allegiant','1','2013','Fantasy','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9217601107409','Chris Kyle','American Sniper: The Autobiography of the Most Lethal Sniper in U.S. Military History','0','2015','Historical Fiction','3');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9863792007414','Khaled Hosseini','And the Mountains Echoed','0','2013','Classics','4');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9369173631370','Glenn Beck','Arguing with Idiots: How to Stop Small Minds and Big Government','0','2009','Horror','4');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9549211288975','Neil deGrasse Tyson','Astrophysics for People in a Hurry','0','2017','Classics','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9139443718418','Mark Twain','Autobiography of Mark Twain, Vol. 1','0','2010','Drama','8');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9605884686426','DK','Baby Touch and Feel: Animals','0','2015','Classics','6');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9536706482923','Angie Grace','Balance (Angie´s Extreme Stress Menders)','0','2015','Drama','3');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9675760400113','Ina Garten','Barefoot Contessa Foolproof: Recipes You Can Trust: A Cookbook','1','2012','Historical Fiction','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9538491153453','Ina Garten','Barefoot Contessa, How Easy Is That?: Fabulous Recipes & Easy Tips','1','2010','Horror','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9852139619063','Michelle Obama','Becoming','0','2018','Drama','6');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9659717411009','Michelle Obama','Becoming','1','2019','Adventure','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9647827362803','Atul Gawande','Being Mortal: Medicine and What Matters in the End','1','2015','Comic','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9202965665180','Ta-Nehisi Coates','Between the World and Me','1','2015','Fantasy','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9605552248093','Ta-Nehisi Coates','Between the World and Me','0','2016','Classics','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9323124151531','Bruce Springsteen','Born to Run','0','2016','Fantasy','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9683682696469','Stephenie Meyer','Breaking Dawn (The Twilight Saga, Book 4)','1','2009','Adventure','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9466593782778','Glenn Beck','Broke: The Plan to Restore Our Trust, Truth and Treasure','1','2010','Historical Fiction','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9775784357661','Bill Martin Jr.','Brown Bear, Brown Bear, What Do You See?','1','2017','Drama','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9356403135892','Bill Martin Jr.','Brown Bear, Brown Bear, What Do You See?','0','2019','Fantasy','3');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9310182028692','Jeff Kinney','Cabin Fever (Diary of a Wimpy Kid, Book 6)','0','2011','Drama','9');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9972539988509','Sasha O´Hara','Calm the F*ck Down: An Irreverent Adult Coloring Book (Irreverent Book Series)','1','2016','Action','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9205027107400','David Goggins','Can´t Hurt Me: Master Your Mind and Defy the Odds','0','2019','Drama','5');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9744109673190','Thomas Piketty','Capital in the Twenty First Century','1','2014','Horror','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9258580319863','Suzanne Collins','Catching Fire (The Hunger Games)','0','2010','Historical Fiction','2');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9765832778208','Suzanne Collins','Catching Fire (The Hunger Games)','1','2011','Horror','1');
+INSERT INTO books(ISBN,Author,Title,Virtual,Publication_Date,Genre,Quantity)VALUES('9698535838968','Suzanne Collins','Catching Fire (The Hunger Games)','1','2012','Action','1');
+
+
+GO
+
+
+CREATE PROCEDURE SPCustomerBorrows
+	(@BookID as int
+	,@CustomerID as int
+	,@employeeID as int
+	,@RentalPeriod as int = 7
+	)
+AS
+	BEGIN
+		IF (SELECT quantity from Books where BookID=@BookID) = 0
+		BEGIN
+			RAISERROR('This book is out of order',16,2)
+		END
+		ELSE
+		BEGIN
+			INSERT INTO Borrow (CustomerID,BookID,EmployeeID,Due_Date) VALUES
+			(@customerID,@BookID,@employeeID,(GETDATE()+@rentalperiod))
+			UPDATE Books set Quantity=Quantity-1 WHERE BookID = @BookID
+		END		
+	END
+	SELECT * FROM BOOKS	
+	SELECT * FROM BORROW
+EXEC SPCustomerBorrows @customerid=8, @bookid = 12, @employeeID = 3, @RentalPeriod=15
+select * from books where BookID=8
+select * from Librarian
+
+GO
+CREATE PROCEDURE SPBookReturn
+	(@BookID as int
+	,@customerID as int
+	)
+AS
+	BEGIN
+		IF (select due_date from Borrow where CustomerID=@customerID AND BookID=@BookID) < getdate()
+			BEGIN 
+				DECLARE @DELAY AS INT
+				SET @DELAY = DATEDIFF(DAY,(SELECT due_date FROM Borrow WHERE CustomerID=@customerID AND BookID=@BookID),GETDATE())
+				PRINT 'This book was delivered with a delay of' + @delay + 'days, which amounts to a delay of of'+ (@delay * 1.5) + '€'
+				UPDATE Borrow SET Returned = 1 where CustomerID=@customerID
+			END
+		ELSE
+			BEGIN
+				UPDATE Borrow SET Returned = 1 WHERE CustomerID=@customerID AND BookID=@BookID
+			END
+	END
+select * from Borrow
+EXECUTE spbookreturn @bookid =12, @customerid=8
+SELECT * FROM borrow WHERE Due_Date<GETDATE()
+SELECT * FROM Books WHERE genre like 'Drama' and Quantity>0
+SELECT * FROM BOOKS WHERE Virtual = 1
